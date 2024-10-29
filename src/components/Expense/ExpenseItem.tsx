@@ -1,19 +1,30 @@
-import { Expense } from "../../types/types";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
-const ExpenseItem = (currentExpense: Expense) => {
-  // Exercise: Consume the AppContext here
+interface ExpenseItemProps {
+  id: string;
+  name: string;
+  cost: number;
+}
 
-  const handleDeleteExpense = (currentExpense: Expense) => {
-    // Exercise: Remove expense from expenses context array
+const ExpenseItem = ({ id, name, cost }: ExpenseItemProps) => {
+  const { expenses, setExpenses } = useContext(AppContext);
+
+  const handleDeleteExpense = (expenseId: string) => {
+    const updatedExpenses = expenses.filter((expense) => expense.id !== expenseId);
+    setExpenses(updatedExpenses);
   };
 
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
-      <div>{currentExpense.name}</div>
-      <div>${currentExpense.cost}</div>
-      <div>
-        <button onClick={() => handleDeleteExpense(currentExpense)}>x</button>
-      </div>
+      <span>{name}</span>
+      <span>${cost.toFixed(2)}</span> {/* Display cost with 2 decimal places */}
+      <button
+        onClick={() => handleDeleteExpense(id)}
+        className="btn btn-danger btn-sm"
+      >
+        Delete
+      </button>
     </li>
   );
 };
